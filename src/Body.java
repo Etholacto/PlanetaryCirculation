@@ -32,7 +32,7 @@ public class Body {
     public Vector3 gravitationalForce(Body b) {
 
         //TODO: implement method.
-        Vector3 dir = this.massCenter.minus(b.massCenter);
+        Vector3 dir = b.massCenter.minus(this.massCenter);
         double dist = dir.length();
         dir.normalize();
         double m1m2 = this.mass*b.mass;
