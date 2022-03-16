@@ -43,8 +43,10 @@ public class Simulation {
         Random random = new Random(2022);
 
         for (int i = 0; i < bodies.length; i++) {
-            bodies[i] = new Body();
-            bodies[i].mass = Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / bodies.length; // kg
+            bodies[i] = new Body(Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / bodies.length,
+                    new Vector3(0.2 * random.nextGaussian() * AU, 0.2 * random.nextGaussian() * AU, 0.2 * random.nextGaussian() * AU),
+                    new Vector3( 0 + random.nextGaussian() * 5e3, 0 + random.nextGaussian() * 5e3, 0 + random.nextGaussian() * 5e3));
+            /*bodies[i].mass = Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / bodies.length; // kg
             bodies[i].massCenter = new Vector3();
             bodies[i].currentMovement = new Vector3();
             bodies[i].massCenter.x = 0.2 * random.nextGaussian() * AU;
@@ -53,7 +55,7 @@ public class Simulation {
 
             bodies[i].currentMovement.x = 0 + random.nextGaussian() * 5e3;
             bodies[i].currentMovement.y = 0 + random.nextGaussian() * 5e3;
-            bodies[i].currentMovement.z = 0 + random.nextGaussian() * 5e3;
+            bodies[i].currentMovement.z = 0 + random.nextGaussian() * 5e3;*/
 
         }
 
@@ -66,9 +68,8 @@ public class Simulation {
             // merge bodies that have collided
             for (int i = 0; i < bodies.length; i++) {
                 for (int j = i + 1; j < bodies.length; j++) {
-                    if (distance(bodies[j].massCenter, bodies[i].massCenter) <
-                            SpaceDraw.massToRadius(bodies[j].mass) + SpaceDraw.massToRadius(bodies[i].mass)) {
-                        bodies[i] = merge(bodies[i], bodies[j]);
+                    if (bodies[j].distanceTo(bodies[i]) < bodies[j].radius()+bodies[i].radius()){
+                        bodies[i] = bodies[i].merge(bodies[j]);
                         Body[] bodiesOneRemoved = new Body[bodies.length - 1];
                         for (int k = 0; k < bodiesOneRemoved.length; k++) {
                             bodiesOneRemoved[k] = bodies[k < j ? k : k + 1];
@@ -85,11 +86,11 @@ public class Simulation {
 
             // for each body (with index i): compute the total force exerted on it.
             for (int i = 0; i < bodies.length; i++) {
-                forceOnBody[i] = new Vector3(); // begin with zero
+                forceOnBody[i] = new Vector3(0,0,0); // begin with zero
                 for (int j = 0; j < bodies.length; j++) {
                     if (i != j) {
-                        Vector3 forceToAdd = gravitationalForce(bodies[i], bodies[j]);
-                        forceOnBody[i] = plus(forceOnBody[i], forceToAdd);
+                        Vector3 forceToAdd = bodies[i].gravitationalForce(bodies[j]);
+                        forceOnBody[i] = forceOnBody[i].plus(forceToAdd);
                     }
                 }
             }
@@ -97,7 +98,7 @@ public class Simulation {
 
             // for each body (with index i): move it according to the total force exerted on it.
             for (int i = 0; i < bodies.length; i++) {
-                move(bodies[i], forceOnBody[i]);
+                bodies[i].move(forceOnBody[i]);
             }
 
             // show all movements in the canvas only every hour (to speed up the simulation)
@@ -107,7 +108,7 @@ public class Simulation {
 
                 // draw new positions
                 for (Body body : bodies) {
-                    draw(cd, body);
+                    body.draw(cd);
                 }
 
                 // show new positions
@@ -115,6 +116,7 @@ public class Simulation {
             }
 
         }
+/*
 
     }
 
@@ -175,13 +177,7 @@ public class Simulation {
 
     // Move the body 'b' according to the 'force' excerted on it.
     public static void move(Body b, Vector3 force) {
-        Vector3 newPosition = plus(
-                plus(b.massCenter,
-                        times(force, 1 / b.mass)
-                        // F = m*a -> a = F/m
-                ),
-                b.currentMovement
-        );
+        Vector3 newPosition = plus(plus(b.massCenter, times(force, 1 / b.mass)), b.currentMovement);
 
         // new minus old position.
         Vector3 newMovement = minus(newPosition, b.massCenter);
@@ -248,6 +244,9 @@ public class Simulation {
         v.x /= length;
         v.y /= length;
         v.z /= length;
+
+ */
     }
+
 
 }

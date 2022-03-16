@@ -6,8 +6,6 @@ public class Aufgabe1Test {
 
         //test classes Body and Vector3
 
-        /* TODO: remove this line
-
         // create two bodies
         Body sun = new Body(1.989e30,new Vector3(0,0,0),new Vector3(0,0,0));
         Body earth = new Body(5.972e24,new Vector3(-1.394555e11,5.103346e10,0),new Vector3(-10308.53,-28169.38,0));
@@ -30,7 +28,6 @@ public class Aufgabe1Test {
         // check distance to target position (should be zero)
         testValue(earth.distanceTo(targetPositionEarth), 0);
 
-        // TODO: remove this line */
 
     }
 
