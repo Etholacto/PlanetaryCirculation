@@ -8,6 +8,7 @@ public class BodyQueue {
     //TODO: declare variables.
 
     // Initializes this queue with an initial capacity.
+    // Precondition: initialCapacity > 0.
     public BodyQueue(int initialCapacity) {
 
         //TODO: define constructor.
@@ -16,6 +17,7 @@ public class BodyQueue {
     // Initializes this queue as an independent copy of the specified queue.
     // Calling methods of this queue will not affect the specified queue
     // and vice versa.
+    // Precondition: q != null.
     public BodyQueue(BodyQueue q) {
 
         //TODO: define constructor.
