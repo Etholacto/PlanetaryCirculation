@@ -95,5 +95,9 @@ public class Body {
         return this.mass+" kg, position: "+this.massCenter+" m, movement: "+this.currentMovement+" m/s";
     }
 
+    //Getter for the Mass of the Body
+    public double getMass() {
+        return mass;
+    }
 }
 
