@@ -9,9 +9,17 @@ public class Body {
     private double mass;
     private Vector3 massCenter; // position of the mass center.
     private Vector3 currentMovement;
+    private Body mainbody;
 
     //TODO: define constructor.
     public Body(double mass, Vector3 massCenter, Vector3 currentMovement){
+        this.mass = mass;
+        this.massCenter = massCenter;
+        this.currentMovement = currentMovement;
+    }
+
+    public Body(Body mainbody, double mass, Vector3 massCenter, Vector3 currentMovement){
+        this.mainbody = mainbody;
         this.mass = mass;
         this.massCenter = massCenter;
         this.currentMovement = currentMovement;
@@ -92,7 +100,7 @@ public class Body {
     public String toString() {
 
         //TODO: implement method.
-        return this.mass+" kg, position: "+this.massCenter+" m, movement: "+this.currentMovement+" m/s";
+        return this.mass+" kg, position: "+this.massCenter+" m, movement: "+this.currentMovement+" m/s, Distance to mainbody: " + this.distanceTo(mainbody) +" m";
     }
 
     //Getter for the Mass of the Body

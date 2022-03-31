@@ -40,10 +40,13 @@ public class Simulation {
         Body[] bodies = new Body[NUMBER_OF_BODIES];
         Vector3[] forceOnBody = new Vector3[bodies.length];
 
+        Body mainbody = new Body(OVERALL_SYSTEM_MASS/8, new Vector3(0,0,0), new Vector3(0,0,0));
+
+
         Random random = new Random(2022);
 
         for (int i = 0; i < bodies.length; i++) {
-            bodies[i] = new Body(Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / bodies.length,
+            bodies[i] = new Body(mainbody, Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / bodies.length,
                     new Vector3(0.2 * random.nextGaussian() * AU, 0.2 * random.nextGaussian() * AU, 0.2 * random.nextGaussian() * AU),
                     new Vector3( 0 + random.nextGaussian() * 5e3, 0 + random.nextGaussian() * 5e3, 0 + random.nextGaussian() * 5e3));
             /*bodies[i].mass = Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / bodies.length; // kg
@@ -59,6 +62,8 @@ public class Simulation {
 
         }
 
+        double tempmass = bodies[0].getMass();
+
         double seconds = 0;
 
         // simulation loop
@@ -70,6 +75,9 @@ public class Simulation {
                 for (int j = i + 1; j < bodies.length; j++) {
                     if (bodies[j].distanceTo(bodies[i]) < bodies[j].radius()+bodies[i].radius()){
                         bodies[i] = bodies[i].merge(bodies[j]);
+                        if (bodies[0].getMass() == tempmass) {
+                            System.out.println(bodies[0]);
+                        }
                         Body[] bodiesOneRemoved = new Body[bodies.length - 1];
                         for (int k = 0; k < bodiesOneRemoved.length; k++) {
                             bodiesOneRemoved[k] = bodies[k < j ? k : k + 1];
