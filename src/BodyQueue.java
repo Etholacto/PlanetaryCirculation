@@ -7,14 +7,14 @@ public class BodyQueue {
 
     //TODO: declare variables.
     private int initialCapacity;
-    private DEQueue q;
+    private DEQueue que;
 
     // Initializes this queue with an initial capacity.
     // Precondition: initialCapacity > 0.
     public BodyQueue(int initialCapacity) {
         //TODO: define constructor.
         this.initialCapacity = initialCapacity;
-        this.q = new DEQueue();
+        this.que = new DEQueue();
     }
 
     // Initializes this queue as an independent copy of the specified queue.
@@ -23,15 +23,16 @@ public class BodyQueue {
     // Precondition: q != null.
     public BodyQueue(BodyQueue q) {
         //TODO: define constructor.
-        this.initialCapacity = q.getInitialCapacity();
-        this.q = new DEQueue();
-        setQ(q.getQ());
+        this(q.getInitialCapacity());
+        this.que.setBodies(q.que.getBodies());
+        this.que.setHead(q.que.getHead());
+        this.que.setTail(q.que.getTail());
     }
 
     // Adds the specified body 'b' to this queue.
     public void add(Body b) {
         //TODO: implement method.
-        q.addLast(b);
+        que.addLast(b);
     }
 
     // Retrieves and removes the head of this queue, or returns 'null'
@@ -39,26 +40,20 @@ public class BodyQueue {
     public Body poll() {
 
         //TODO: implement method.
-        return this.q.pollFirst();
+        return this.que.pollFirst();
     }
 
     // Returns the number of bodies in this queue.
     public int size() {
 
         //TODO: implement method.
-        return q.size();
+        return que.size();
     }
 
     public int getInitialCapacity() {
         return initialCapacity;
     }
 
-    public DEQueue getQ() {
-        return q;
-    }
-    public void setQ(DEQueue q){
-        this.q = q;
-    }
 }
 
 class DEQueue{
@@ -124,5 +119,34 @@ class DEQueue{
             newes[j++] = bodies[i++];
         }
         bodies = newes;
+    }
+
+    public Body[] getBodies() {
+        return bodies;
+    }
+
+    public void setBodies(Body[] body){
+        for (int i = 0; i < body.length; i++) {
+            if (body.length > bodies.length) {
+                doubleCapacity();
+            }
+            this.bodies[i] = body[i];
+        }
+    }
+
+    public int getHead(){
+        return head;
+    }
+
+    public void setHead(int head){
+        this.head = head;
+    }
+
+    public int getTail(){
+        return tail;
+    }
+
+    public void setTail(int tail){
+        this.tail = tail;
     }
 }
