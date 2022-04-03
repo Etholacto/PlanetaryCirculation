@@ -19,7 +19,7 @@ public class Aufgabe3Test {
         bl.addLast(mercury);
         bl.addLast(sun);
         bl.addLast(earth);
-        //testValue(bl.size(), 3);
+        testValue(bl.size(), 3);
 
         testValue(bl.getFirst(), mercury);
         testValue(bl.getLast(), earth);
@@ -38,7 +38,7 @@ public class Aufgabe3Test {
         testValue(bl.pollLast(), earth);
         testValue(bl.pollFirst(), sun);
 
-        //testValue(bl.size(), 0);
+        testValue(bl.size(), 0);
         testValue(bl.getFirst(), null);
 
         System.out.println("Test4:");

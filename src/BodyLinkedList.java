@@ -95,7 +95,7 @@ public class BodyLinkedList {
         //TODO: implement method.
         if (last != null) {
             Body result = last.getBody();
-            last = first;
+            last = last.next();
             if (last == null) {
                 first = null;
             }
@@ -165,10 +165,10 @@ public class BodyLinkedList {
     public int size() {
 
         //TODO: implement method.
-        if (last == first) {
+        if (last == null) {
             return 0;
         }
-        return last.size();
+        return last.size(last.getBody());
     }
 }
 
@@ -197,11 +197,11 @@ class ListNode {
         this.b = b;
     }
 
-    int size() {
-        if (next == null) {
-            return 1;
+    int size(Body b) {
+        if (next.getBody() == b) {
+            return 2;
         }
-        return 1 + next.size();
+        return 1 + next.size(b);
 
     }
 }
