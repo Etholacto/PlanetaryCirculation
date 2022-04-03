@@ -107,5 +107,12 @@ public class Body {
     public double getMass() {
         return mass;
     }
+
+    public int compareTo(Body key){
+        if (this.mass == key.mass) {
+            return 0;
+        }
+        return 1;
+    }
 }
 
