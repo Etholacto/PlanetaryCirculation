@@ -37,6 +37,9 @@ public class Aufgabe2Test {
         testValue(bq.size(), 2);
         testValue(bqCopy.size(), 1);
 
+        BodyQueue test;
+        test = bq.getJoined(bqCopy);
+
         // check basic functions of 'BodyForceMap'
         System.out.println("Test2:");
         BodyForceMap bfm = new BodyForceMap(5);

@@ -51,8 +51,7 @@ public class BodyForceMap {
 
     private int find(Body s, Body[] a) {
         int i = 0;
-        while (i < top &&
-                !(s == null ? s == a[i] : s.equals(a[i])))
+        while (i < top && !(s == null ? s == a[i] : s.equals(a[i])))
             i++;
         return i;
     }
