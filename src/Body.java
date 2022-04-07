@@ -100,7 +100,7 @@ public class Body {
     public String toString() {
 
         //TODO: implement method.
-        return this.mass+" kg, position: "+this.massCenter+" m, movement: "+this.currentMovement+" m/s";
+        return this.mass+" kg, position: "+this.massCenter+" m, movement: "+this.currentMovement+" m/s, Distance to mainbody: " + this.distanceTo(mainbody) +" m";
     }
 
     //Getter for the Mass of the Body

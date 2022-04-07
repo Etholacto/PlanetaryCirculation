@@ -37,18 +37,23 @@ public class Simulation {
 
         // simulation
         CodeDraw cd = new CodeDraw();
+        /*
         Body[] bodies = new Body[NUMBER_OF_BODIES];
         Vector3[] forceOnBody = new Vector3[bodies.length];
+         */
 
-        Body mainbody = new Body(OVERALL_SYSTEM_MASS/8, new Vector3(0,0,0), new Vector3(0,0,0));
+        BodyQueue queue = new BodyQueue(NUMBER_OF_BODIES);
+        BodyForceMap forceMap = new BodyForceMap(NUMBER_OF_BODIES);
+
+        //Body mainbody = new Body(OVERALL_SYSTEM_MASS/8, new Vector3(0,0,0), new Vector3(0,0,0));
 
 
         Random random = new Random(2022);
 
-        for (int i = 0; i < bodies.length; i++) {
-            bodies[i] = new Body(mainbody, Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / bodies.length,
+        for (int i = 0; i < queue.getInitialCapacity(); i++) {
+            queue.add(new Body(/*mainbody,*/ Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / queue.size(),
                     new Vector3(0.2 * random.nextGaussian() * AU, 0.2 * random.nextGaussian() * AU, 0.2 * random.nextGaussian() * AU),
-                    new Vector3( 0 + random.nextGaussian() * 5e3, 0 + random.nextGaussian() * 5e3, 0 + random.nextGaussian() * 5e3));
+                    new Vector3( 0 + random.nextGaussian() * 5e3, 0 + random.nextGaussian() * 5e3, 0 + random.nextGaussian() * 5e3)));
             /*bodies[i].mass = Math.abs(random.nextGaussian()) * OVERALL_SYSTEM_MASS / bodies.length; // kg
             bodies[i].massCenter = new Vector3();
             bodies[i].currentMovement = new Vector3();
@@ -62,7 +67,7 @@ public class Simulation {
 
         }
 
-        double tempmass = bodies[0].getMass();
+        //double tempmass = bodies[0].getMass();
 
         double seconds = 0;
 
@@ -70,6 +75,7 @@ public class Simulation {
         while (true) {
             seconds++; // each iteration computes the movement of the celestial bodies within one second.
 
+            /*
             // merge bodies that have collided
             for (int i = 0; i < bodies.length; i++) {
                 for (int j = i + 1; j < bodies.length; j++) {
@@ -91,22 +97,31 @@ public class Simulation {
                     }
                 }
             }
+            */
 
             // for each body (with index i): compute the total force exerted on it.
-            for (int i = 0; i < bodies.length; i++) {
-                forceOnBody[i] = new Vector3(0,0,0); // begin with zero
-                for (int j = 0; j < bodies.length; j++) {
-                    if (i != j) {
-                        Vector3 forceToAdd = bodies[i].gravitationalForce(bodies[j]);
-                        forceOnBody[i] = forceOnBody[i].plus(forceToAdd);
+            BodyQueue cpqueue1 = new BodyQueue(queue);
+            BodyQueue cpqueue2 = new BodyQueue(queue);
+            while (cpqueue1.size() != 0){
+                Vector3 forceOnBody = new Vector3(0,0,0);
+                Body temp1 = cpqueue1.poll();
+                while (cpqueue2.size() != 0){
+                    Body temp2 = cpqueue2.poll();
+                    if (temp1 == temp2) {
+                        temp2 = cpqueue2.poll();
+                    }else{
+                        Vector3 forceToAdd = temp1.gravitationalForce(temp2);
+                        forceMap.put(temp1, forceOnBody.plus(forceToAdd));
                     }
                 }
             }
             // now forceOnBody[i] holds the force vector exerted on body with index i.
 
             // for each body (with index i): move it according to the total force exerted on it.
-            for (int i = 0; i < bodies.length; i++) {
-                bodies[i].move(forceOnBody[i]);
+            BodyQueue temp = new BodyQueue(queue);
+            for (int i = 0; i < queue.size(); i++) {
+                Body tempo = temp.poll();
+                tempo.move(forceMap.get(tempo));
             }
 
             // show all movements in the canvas only every hour (to speed up the simulation)
@@ -115,8 +130,9 @@ public class Simulation {
                 cd.clear(Color.BLACK);
 
                 // draw new positions
-                for (Body body : bodies) {
-                    body.draw(cd);
+                BodyQueue copy = new BodyQueue(queue);
+                for (int i = 0; i < queue.size(); i++) {
+                    copy.poll().draw(cd);
                 }
 
                 // show new positions
