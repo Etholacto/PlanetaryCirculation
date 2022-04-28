@@ -1,113 +1,183 @@
+import codedraw.CodeDraw;
+
 // A map that associates a Body with a Vector3 (typically this is the force exerted on the body).
 // The number of key-value pairs is not limited.
 public class BodyForceTreeMap {
 
-    //TODO: declare variables.
-    private TANode root;
+    private MyTreeNode root;
 
     // Adds a new key-value association to this map. If the key already exists in this map,
     // the value is replaced and the old value is returned. Otherwise 'null' is returned.
     // Precondition: key != null.
     public Vector3 put(Body key, Vector3 value) {
-
-        //TODO: implement method.
-        if (root != null) {
-            return root.put(key, value);
+        if (root == null) {
+            root = new MyTreeNode(key, value, null, null);
+            return null;
         }
-        root = new TANode(key, value);
-        return null;
+        return root.add(key, value);
     }
 
     // Returns the value associated with the specified key, i.e. the method returns the force vector
     // associated with the specified key. Returns 'null' if the key is not contained in this map.
     // Precondition: key != null.
     public Vector3 get(Body key) {
-
-        //TODO: implement method.
-        if (root == null) {
+        if (!containsKey(key)) {
             return null;
         }
-        TANode node = root.find(key);
-        return node == null ? null : node.value();
+        return root.get(key);
     }
 
     // Returns 'true' if this map contains a mapping for the specified key.
     public boolean containsKey(Body key) {
-
-        //TODO: implement method.
-        return root != null && root.find(key) != null;
+        if (root == null) {
+            return false;
+        }
+        return root.containsKey(key);
     }
 
     // Returns a readable representation of this map, in which key-value pairs are ordered
     // descending according to the mass of the bodies.
     public String toString() {
+        if (root == null) {
+            return "";
+        }
+        return root.toString();
+    }
 
-        //TODO: implement method.
-        return null;
+    //additional method to visualize tree
+    public void draw() {
+        CodeDraw cd = new CodeDraw(500, 500);
+        if (root == null) {
+            cd.drawText(200, 50, "Empty tree");
+        } else {
+            root.draw(cd, 250, 10);
+        }
+        cd.show();
+    }
 
+    public Body getParentKey(Body key){
+        Body parent = new Body(0, new Vector3(0,0,0), new Vector3(0,0,0));
+        parent = root.getParentKey(key, parent);
+        return parent;
     }
 }
 
-class TANode {
+class MyTreeNode {
+    private MyTreeNode left;
+    private MyTreeNode right;
     private Body key;
     private Vector3 value;
-    private TANode left, right;
 
-    public TANode(Body k, Vector3 v) {
-        key = k;
-        value = v;
+    MyTreeNode(Body key, Vector3 value, MyTreeNode left, MyTreeNode right) {
+        this.key = key;
+        this.value = value;
+        this.left = left;
+        this.right = right;
     }
 
-    private int compare(Body k) {
-        if (k == null) {
-            return key == null ? 0 : -1;
+    Vector3 add(Body key, Vector3 value) {
+        if (key == this.key) {
+            Vector3 oldValue = this.value;
+            this.value = value;
+            return oldValue;
         }
-        if (key == null) {
-            return 1;
-        }
-        return k.compareTo(key);
-    }
 
-    public Vector3 put(Body k, Vector3 v) {
-        int cmp = compare(k);
-        if (cmp < 0) {
-            if (left != null) {
-                return left.put(k, v);
+        if (key.mass() < this.key.mass()) {
+            if (left == null) {
+                left = new MyTreeNode(key, value, null, null);
+                return null;
+            } else {
+                return left.add(key, value);
             }
-            left = new TANode(k, v);
-        } else if (cmp > 0) {
-            if (right != null) {
-                return right.put(k, v);
-            }
-            right = new TANode(k, v);
         } else {
-            Vector3 result = value;
-            value = v;
-            return result;
+            if (right == null) {
+                right = new MyTreeNode(key, value, null, null);
+                return null;
+            } else {
+                return right.add(key, value);
+            }
         }
-        return null;
     }
 
-    public TANode find(Body k) {
-        int cmp = compare(k);
-        if (cmp == 0) {
-            return this;
+    Vector3 get(Body key) {
+        if (key == this.key) {
+            return value;
         }
-        TANode node = cmp < 0 ? left : right;
-        if (node == null) {
+
+        if (key.mass() < this.key.mass()) {
+            if (left == null) {
+                return null;
+            }
+            return left.get(key);
+        } else {
+            if (right == null) {
+                return null;
+            }
+            return right.get(key);
+        }
+
+    }
+
+    Body getParentKey(Body key, Body parent) {
+        if (key == this.key) {
+            return parent;
+        }
+        if (this.right.key != null && key == this.right.key) {
+            parent = this.key;
+            return parent;
+        } else if (this.right.key != null) {
+            parent = this.right.key;
+            parent = right.getParentKey(this.right.key, parent);
+        } else {
             return null;
         }
-        return node.find(k);
+        if (this.left.key != null && key == this.left.key) {
+            parent = this.key;
+            return parent;
+        } else if (this.left.key != null) {
+            parent = this.left.key;
+            parent = left.getParentKey(this.left.key, parent);
+        } else {
+            return null;
+        }
+        return parent;
     }
 
-    public boolean hasValue(Vector3 v) {
-        return (v == null ? value == v
-                : v.equals(value)) ||
-                (left != null && left.hasValue(v)) ||
-                (right != null && right.hasValue(v));
+    public String toString() {
+        String result;
+        result = right == null ? "" : right.toString();
+        result += "(" + this.key + "|" + this.value + ")\n";
+        result += left == null ? "" : left.toString();
+        return result;
     }
 
-    public Vector3 value() {
-        return value;
+    public boolean containsKey(Body key) {
+        if (key == this.key) {
+            return true;
+        }
+        if (key.mass() < this.key.mass()) {
+            if (left == null) {
+                return false;
+            }
+            return left.containsKey(key);
+        } else {
+            if (right == null) {
+                return false;
+            }
+            return right.containsKey(key);
+        }
+    }
+
+    public void draw(CodeDraw cd, double x, double y) {
+        cd.fillCircle(x, y, 10);
+        cd.drawText(x + 10, y, "" + key.mass());
+        if (left != null) {
+            cd.drawLine(x, y, x - 30, y + 60);
+            left.draw(cd, x - 30, y + 60);
+        }
+        if (right != null) {
+            cd.drawLine(x, y, x + 30, y + 60);
+            right.draw(cd, x + 30, y + 60);
+        }
     }
 }

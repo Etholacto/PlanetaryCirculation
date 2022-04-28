@@ -82,6 +82,10 @@ public class Body {
         return result;
     }
 
+    public double mass(){
+        return this.mass;
+    }
+
     // Draws the body to the specified canvas as a filled circle.
     // The radius of the circle corresponds to the radius of the body
     // (use a conversion of the real scale to the scale of the canvas as
