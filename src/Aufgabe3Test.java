@@ -45,10 +45,10 @@ public class Aufgabe3Test {
         bl.addFirst(earth);
         bl.addFirst(venus);
         bl.addFirst(sun);
-        //bl.add(1, mercury);
-        //bl.add(4, mars);
+        bl.add(1, mercury);
+        bl.add(4, mars);
 
-        //testValue(bl.size(), 5);
+        testValue(bl.size(), 5);
 
         testValue(bl.get(0), sun);
         testValue(bl.get(1), mercury);
@@ -61,8 +61,8 @@ public class Aufgabe3Test {
         testComparison(bl, blCopy, false);
         testComparison(bl.pollFirst(), blCopy.pollFirst(), true);
         bl.addFirst(sun);
-        //testValue(bl.size(), 5);
-        //testValue(blCopy.size(), 4);
+        testValue(bl.size(), 5);
+        testValue(blCopy.size(), 4);
 
         // check basic functions of 'BodyForceTreeMap'
         System.out.println("Test5:");

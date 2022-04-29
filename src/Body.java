@@ -40,12 +40,11 @@ public class Body {
     public Vector3 gravitationalForce(Body b) {
 
         //TODO: implement method.
-        Vector3 dir = b.massCenter.minus(this.massCenter);
-        double dist = dir.length();
-        dir.normalize();
-        double m1m2 = this.mass*b.mass;
-        double F = Simulation.G*m1m2/(dist*dist);
-        return dir.times(F);
+        Vector3 direction = b.massCenter.minus(this.massCenter);
+        double distance = direction.length();
+        direction.normalize();
+        double force = Simulation.G * this.mass * b.mass / (distance * distance);
+        return direction.times(force);
     }
 
     // Moves this body to a new position, according to the specified force vector 'force' exerted
@@ -96,6 +95,15 @@ public class Body {
         //TODO: implement method.
         cd.setColor(SpaceDraw.massToColor(this.mass));
         this.massCenter.drawAsFilledCircle(cd, this.radius());
+    }
+
+    //returns true if this body collides with the Body b
+    public boolean collidesWith(Body b) {
+        return (this.distanceTo(b) < this.radius() + b.radius());
+    }
+
+    public Vector3 massCenter(){
+        return this.massCenter;
     }
 
     // Returns a string with the information about this body including

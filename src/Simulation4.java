@@ -47,7 +47,23 @@ public class Simulation4 {
         NamedBodyForcePair ceres = new NamedBodyForcePair("Ceres",9.394E20, new Vector3(3.781372641419032E11,1.96718960466285E11,-6.366459168068592E10), new Vector3(-8555.324226752316,14718.33755980907,2040.230135060142));
 
         //TODO: implementation of this method according to 'Aufgabenblatt4.md'.
+        double seconds = 0;
+        HierarchicalSystem hs = new HierarchicalSystem(sun, mercury, venus,
+                new HierarchicalSystem(earth, moon), new HierarchicalSystem(mars, deimos,
+                phobos), vesta, pallas, hygiea, ceres);
 
+        while(true){
+            seconds++;
+
+            hs.addForceTo(hs);
+            hs.update();
+
+            if (seconds % (3600) == 0) {
+                cd.clear(Color.BLACK);
+                hs.draw(cd);
+                cd.show();
+            }
+        }
 
     }
 }

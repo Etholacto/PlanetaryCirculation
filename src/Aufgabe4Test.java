@@ -7,7 +7,7 @@ public class Aufgabe4Test {
     public static void main(String[] args) {
 
         //TODO: uncomment for testing
-        /*
+
         //test classes HierachicalSystem and NamedBodyForcePair
 
         // create 12 bodies
@@ -173,7 +173,7 @@ public class Aufgabe4Test {
         for (int i = 0; i < bodies.length; i++) {
             testValue(bodies[i].massCenter().distanceTo(pairs[i].getMassCenter()),0);
         }
-        */ //TODO: uncomment
+         //TODO: uncomment
     }
 
     public static void testComparison(Object first, Object second, boolean expected) {
