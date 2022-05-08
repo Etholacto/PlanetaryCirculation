@@ -84,7 +84,7 @@ public class HierarchicalSystem implements CosmicSystem /* TODO: add clause */ {
     @Override
     public BodyLinkedList getBodies() {
         BodyLinkedList bodlist = new BodyLinkedList();
-        bodlist.addFirst(this.central.body);
+        bodlist.addFirst(this.central.getBody());
         for (int i = 0; i < this.inOrbit.length; i++) {
             BodyLinkedList tmp = this.inOrbit[i].getBodies();
             for (int j = 0; j < this.inOrbit[i].getBodies().size(); j++) {

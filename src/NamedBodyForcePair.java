@@ -6,9 +6,9 @@ import codedraw.CodeDraw;
 public class NamedBodyForcePair implements CosmicSystem/* TODO: add clause */ {
 
     // TODO: define missing parts of this class.
-    String name;
-    Body body;
-    Vector3 force;
+    private String name;
+    private Body body;
+    private Vector3 force;
 
     // Initializes this with name, mass, current position and movement. The associated force
     // is initialized with a zero vector.
@@ -81,5 +81,9 @@ public class NamedBodyForcePair implements CosmicSystem/* TODO: add clause */ {
     @Override
     public String toString(){
         return this.getName();
+    }
+
+    public Body getBody() {
+        return body;
     }
 }
