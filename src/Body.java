@@ -1,9 +1,10 @@
 import codedraw.CodeDraw;
 
 import java.awt.*;
+import java.util.Objects;
 
 // This class represents celestial bodies like stars, planets, asteroids, etc..
-public class Body {
+public class Body implements Massive{
 
     //TODO: change modifiers.
     private double mass;
@@ -37,13 +38,14 @@ public class Body {
     // masses of the objects interacting, r being the distance between the centers of the masses
     // and G being the gravitational constant.
     // Hint: see simulation loop in Simulation.java to find out how this is done.
-    public Vector3 gravitationalForce(Body b) {
+    @Override
+    public Vector3 gravitationalForce(Massive b) {
 
         //TODO: implement method.
-        Vector3 direction = b.massCenter.minus(this.massCenter);
+        Vector3 direction = b.getMassCenter().minus(this.massCenter);
         double distance = direction.length();
         direction.normalize();
-        double force = Simulation.G * this.mass * b.mass / (distance * distance);
+        double force = Simulation.G * this.mass * b.getMass() / (distance * distance);
         return direction.times(force);
     }
 
@@ -51,18 +53,22 @@ public class Body {
     // on it, and updates the current movement accordingly.
     // (Movement depends on the mass of this body, its current movement and the exerted force.)
     // Hint: see simulation loop in Simulation.java to find out how this is done.
+    @Override
     public void move(Vector3 force) {
 
         //TODO: implement method.
-        Vector3 newPos = this.currentMovement.plus(this.massCenter.plus(force.times(1/this.mass)));
-        Vector3 newMov = newPos.minus(this.massCenter);
-        this.massCenter = newPos;
-        this.currentMovement = newMov;
+        if (force != null) {
+            Vector3 newPos = this.currentMovement.plus(this.massCenter.plus(force.times(1/this.mass)));
+            Vector3 newMov = newPos.minus(this.massCenter);
+            this.massCenter = newPos;
+            this.currentMovement = newMov;
+        }
     }
 
     // Returns the approximate radius of this body.
     // (It is assumed that the radius r is related to the mass m of the body by r = m ^ 0.5,
     // where m and r measured in solar units.)
+    @Override
     public double radius() {
 
         //TODO: implement method.
@@ -81,6 +87,7 @@ public class Body {
         return result;
     }
 
+    @Override
     public double mass(){
         return this.mass;
     }
@@ -90,6 +97,7 @@ public class Body {
     // (use a conversion of the real scale to the scale of the canvas as
     // in 'Simulation.java').
     // Hint: call the method 'drawAsFilledCircle' implemented in 'Vector3'.
+    @Override
     public void draw(CodeDraw cd) {
 
         //TODO: implement method.
@@ -102,6 +110,7 @@ public class Body {
         return (this.distanceTo(b) < this.radius() + b.radius());
     }
 
+    @Override
     public Vector3 massCenter(){
         return this.massCenter;
     }
@@ -109,15 +118,49 @@ public class Body {
     // Returns a string with the information about this body including
     // mass, position (mass center) and current movement. Example:
     // "5.972E24 kg, position: [1.48E11,0.0,0.0] m, movement: [0.0,29290.0,0.0] m/s."
+    @Override
     public String toString() {
-
         //TODO: implement method.
         return this.mass+" kg, position: "+this.massCenter+" m, movement: "+this.currentMovement+" m/s";
     }
 
     //Getter for the Mass of the Body
+    @Override
     public double getMass() {
         return mass;
+    }
+
+    @Override
+    public Vector3 getMassCenter() {
+        return massCenter;
+    }
+
+    @Override
+    public double getRadius() {
+        return this.radius();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()){
+            Body body = (Body) o;
+            if (body.mass == this.mass) {
+                if (body.massCenter.compVector(this.massCenter) && body.currentMovement.compVector(this.currentMovement)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        if (this != null) {
+            hash = (int)this.mass + this.massCenter.summedVector() + this.currentMovement.summedVector();
+        }
+        return hash;
     }
 }
 

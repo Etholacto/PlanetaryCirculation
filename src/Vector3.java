@@ -83,8 +83,19 @@ public class Vector3 {
     public String toString() {
 
         //TODO: implement method.
-        return "["+x+","+y+","+z+","+"]";
+        return "["+x+","+y+","+z+"]";
     }
 
+    public int summedVector(){
+        int sum = (int)this.x + (int)this.y + (int)this.z;
+        return sum;
+    }
+
+    public boolean compVector(Vector3 v){
+        if (this.x == v.x && this.y == v.y && this.z == v.z) {
+            return true;
+        }
+        return false;
+    }
 }
 

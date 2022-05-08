@@ -5,7 +5,6 @@ public interface Massive extends Drawable {
 
     // Returns the mass.
     default double mass() {
-
         return getMass();
     }
 
@@ -17,14 +16,13 @@ public interface Massive extends Drawable {
 
     // Returns the mass.
     default double getMass() {
-
-        return mass();
+        return this.mass();
     }
 
     // Returns the mass center.
     default Vector3 getMassCenter() {
 
-        return massCenter();
+        return this.massCenter();
     }
 
     // Returns the approximate radius of 'this', assuming it is a coherent round mass.
@@ -40,7 +38,7 @@ public interface Massive extends Drawable {
     // where m and r measured in solar units.)
     default double radius() {
 
-        return SpaceDraw.massToRadius(mass());
+        return SpaceDraw.massToRadius(getMass());
     }
 
     // Returns a vector representing the gravitational force exerted by 'b' on this mass.
@@ -52,7 +50,7 @@ public interface Massive extends Drawable {
         Vector3 direction = b.massCenter().minus(this.massCenter());
         double distance = direction.length();
         direction.normalize();
-        double force = Simulation.G*this.mass()*b.mass()/(distance * distance);
+        double force = Simulation.G*this.getMass()*b.getMass()/(distance * distance);
         return direction.times(force);
     }
 
