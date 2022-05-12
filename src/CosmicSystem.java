@@ -38,4 +38,6 @@ public interface CosmicSystem extends Drawable {
     // resets all forces to zero.
     void update();
 
+    int getNumberOfCentralBodies();
+
 }

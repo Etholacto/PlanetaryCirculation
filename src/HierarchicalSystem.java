@@ -109,4 +109,15 @@ public class HierarchicalSystem implements CosmicSystem /* TODO: add clause */ {
             this.inOrbit[i].draw(cd);
         }
     }
+
+    @Override
+    public int getNumberOfCentralBodies() {
+        int count = 1;
+        if (this.central != null) {
+            for (int i = 0; i < inOrbit.length; i++) {
+                count += this.inOrbit[i].getNumberOfCentralBodies();
+            }
+        }
+        return count;
+    }
 }
