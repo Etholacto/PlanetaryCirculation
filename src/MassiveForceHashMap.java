@@ -109,6 +109,20 @@ public class MassiveForceHashMap {
         return hash;
     }
 
+    public int numberOfCollisions(){
+        int temp = 0;
+        MassiveLinkedList tmp = this.list;
+        for (int i = 0; i < tmp.size(); i++) {
+            for (int j = 0; j < tmp.size(); j++) {
+                if (tmp.get(i).hashCode() == tmp.get(j).hashCode() && i != j){
+                    temp++;
+                    break;
+                }
+            }
+        }
+        return temp;
+    }
+
     // Returns a list of all the keys in no specified order.
     public MassiveLinkedList keyList() {
 
