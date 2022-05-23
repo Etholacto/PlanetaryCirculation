@@ -4,7 +4,6 @@ public class Aufgabe6Test {
 
     public static void main(String[] args) {
 
-        /* //TODO: uncomment for testing
         NamedBody sun1, mercury1, venus1, earth1, moon1, mars1, deimos1, phobos1, vesta1,
                 pallas1, hygiea1, ceres1;
 
@@ -148,7 +147,6 @@ public class Aufgabe6Test {
         }
         testValue(count, 12);
 
-        */ //TODO: uncomment
     }
 
     public static void testComparison(Object first, Object second, boolean expected) {

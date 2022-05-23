@@ -91,4 +91,8 @@ public class NamedBodyForcePair implements CosmicSystem/* TODO: add clause */ {
     public Body getBody() {
         return body;
     }
+
+    public MassiveIterator iterator() {
+        return new MyMassiveIterator();
+    }
 }

@@ -210,6 +210,10 @@ class MyListNode2 {
         return 1 + next.size();
     }
 
+    Massive Myvalue(){
+        return b;
+    }
+
     public MyListNode2 getNext() {
         return next;
     }

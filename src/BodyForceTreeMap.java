@@ -4,14 +4,14 @@ import codedraw.CodeDraw;
 // The number of key-value pairs is not limited.
 public class BodyForceTreeMap {
 
-    private MyTreeNode root;
+    private MyBodyTreeNode root;
 
     // Adds a new key-value association to this map. If the key already exists in this map,
     // the value is replaced and the old value is returned. Otherwise 'null' is returned.
     // Precondition: key != null.
     public Vector3 put(Body key, Vector3 value) {
         if (root == null) {
-            root = new MyTreeNode(key, value, null, null);
+            root = new MyBodyTreeNode(key, value, null, null);
             return null;
         }
         return root.add(key, value);
@@ -52,7 +52,7 @@ public class BodyForceTreeMap {
         } else {
             root.draw(cd, 250, 10);
         }
-        cd.show();
+        cd.show(); 
     }
 
     public Body getParentKey(Body key){
@@ -62,13 +62,13 @@ public class BodyForceTreeMap {
     }
 }
 
-class MyTreeNode {
-    private MyTreeNode left;
-    private MyTreeNode right;
+class MyBodyTreeNode {
+    private MyBodyTreeNode left;
+    private MyBodyTreeNode right;
     private Body key;
     private Vector3 value;
 
-    MyTreeNode(Body key, Vector3 value, MyTreeNode left, MyTreeNode right) {
+    MyBodyTreeNode(Body key, Vector3 value, MyBodyTreeNode left, MyBodyTreeNode right) {
         this.key = key;
         this.value = value;
         this.left = left;
@@ -84,14 +84,14 @@ class MyTreeNode {
 
         if (key.mass() < this.key.mass()) {
             if (left == null) {
-                left = new MyTreeNode(key, value, null, null);
+                left = new MyBodyTreeNode(key, value, null, null);
                 return null;
             } else {
                 return left.add(key, value);
             }
         } else {
             if (right == null) {
-                right = new MyTreeNode(key, value, null, null);
+                right = new MyBodyTreeNode(key, value, null, null);
                 return null;
             } else {
                 return right.add(key, value);

@@ -4,7 +4,7 @@ import codedraw.CodeDraw;
 // and an arbitrary number of subsystems (of type 'HierarchicalSystem') in its orbit.
 // This class implements 'CosmicSystem'.
 //
-public class HierarchicalSystem implements CosmicSystem /* TODO: add clause */ {
+public class HierarchicalSystem implements CosmicSystem, MassiveIterable /* TODO: add clause */ {
 
     // TODO: define missing parts of this class.
     NamedBodyForcePair central;
@@ -119,5 +119,50 @@ public class HierarchicalSystem implements CosmicSystem /* TODO: add clause */ {
             }
         }
         return count;
+    }
+
+    @Override
+    public MassiveIterator iterator() {
+        return new MyMassiveIterator(new MyListNode2(this.central.getBody(), null, null));
+    }
+}
+
+public class MyMassiveIterator implements MassiveIterator{
+    private MyListNode2 node;
+    private MyMassiveIterator iter;
+
+    public MyMassiveIterator(MyListNode2 node) {
+        this.node = node;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return node != null || (iter != null && iter.hasNext());
+    }
+
+    @Override
+    public Massive next() {
+        if (node == null) {
+            if (iter != null && !iter.hasNext()) return null;
+        }
+        Massive massive;
+
+        if (iter != null && iter.hasNext()) {
+            return iter.next();
+        } else {
+            Massive c = node.Myvalue();
+
+            if (c.getClass() == NamedBodyForcePair.class) {
+                massive = c;
+                node = node.getNext();
+            } else if (c.getClass() == NamedBodyForcePair.class) {
+                iter = (NamedBodyForcePair)c.iterator();
+                node = node.getNext();
+
+                massive = iter.next();
+            } else return null;
+
+            return massive;
+        }
     }
 }
