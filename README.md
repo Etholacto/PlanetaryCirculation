@@ -1,7 +1,1 @@
-Die Angabe für die 1. Aufgabe finden Sie in
-
-* angabe/Aufgabenblatt1.md
-
-die zugehörigen .java-Dateien in src
-
-Entsprechend für die weiteren Aufgaben.
+Project from TUWien programming course to use various progamming techniques and complete the given tasks
